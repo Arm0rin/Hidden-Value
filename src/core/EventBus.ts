@@ -1,0 +1,2 @@
+export type EventHandler<T=unknown>=(payload:T)=>void;
+export class EventBus { private handlers=new Map<string,Set<EventHandler>>(); on<T>(event:string,handler:EventHandler<T>){const set=this.handlers.get(event)??new Set();set.add(handler as EventHandler);this.handlers.set(event,set);return()=>set.delete(handler as EventHandler);} emit<T>(event:string,payload:T){this.handlers.get(event)?.forEach(h=>h(payload));} }

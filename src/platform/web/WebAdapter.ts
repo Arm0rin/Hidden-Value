@@ -1,0 +1,2 @@
+import type {PlatformAdapter} from '../PlatformAdapter';
+export class WebAdapter implements PlatformAdapter { private key='hidden-value-save'; async init(){} getPlatformName(){return 'web';} getLanguage(){return navigator.language?.toLowerCase().startsWith('ru')?'ru':'en';} async loadSave(){try{return localStorage.getItem(this.key);}catch{return null;}} async save(data:string){try{localStorage.setItem(this.key,data);}catch{/* storage unavailable */}} async showRewarded(){return {rewarded:false};} async showInterstitial(){} gameplayStart(){} gameplayStop(){} }

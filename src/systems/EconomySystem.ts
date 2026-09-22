@@ -1,0 +1,2 @@
+import type {GameState} from '../core/types';
+export class EconomySystem { constructor(private state:GameState){} getBalance(){return this.state.player.cash;} canAfford(amount:number){return this.getBalance()>=amount;} spend(amount:number,reason:string){if(amount<0||!this.canAfford(amount))return false;this.state.player.cash-=amount;return true;} earn(amount:number,reason:string){if(amount<0)return false;this.state.player.cash+=amount;return true;} }
