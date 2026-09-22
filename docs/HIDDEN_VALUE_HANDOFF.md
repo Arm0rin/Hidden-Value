@@ -4,7 +4,7 @@
 
 Hidden Value is a premium casual game about discovering the hidden value of old, dirty or suspicious objects. The player's pleasure comes from reducing uncertainty: inspect an object, find a clue, narrow the valuation range, make a purchase decision, restore the object and sell it for a profit.
 
-The first slice proves one complete loop with an old silver pocket watch. It is deliberately small so the feel of inspection, discovery, restoration and reward can be reviewed before adding content.
+The current MVP proves the item loop with an old silver pocket watch and a vintage rangefinder camera. Each item is selected from a shared data contract, while its renderer and clue pattern remain distinct.
 
 ## Current core loop
 
@@ -27,7 +27,7 @@ The first adapter is `WebAdapter`. It uses browser language detection, localStor
 
 ## Implemented systems
 
-- `ValuationSystem`: returns `trueValue`, `knownMin`, `knownMax` and confidence from discovered clues.
+- `ValuationSystem`: returns `trueValue`, `knownMin`, `knownMax` and confidence from the latest discovered clue.
 - `EconomySystem`: checks balance and applies spend/earn operations.
 - `RestorationSystem`: reusable brush and polish tools update condition and visual material state.
 - `SaveService`: handles empty, corrupt and partial saves and writes `saveVersion`.
@@ -76,11 +76,11 @@ interface PlatformAdapter {
 
 No production ad or purchase flow is surfaced in the current slice.
 
-## ItemDefinition and pocket watch data
+## ItemDefinition and item data
 
-Items are data-driven. `pocket_watch_01` defines the seller price `$40`, true restored value `$118`, starting range `$20–$80`, silver `925` clue range `$70–$150`, and brush/polish restoration steps. A future camera should be added as another definition plus assets and localized content, without copying the game flow.
+Items are data-driven. `pocket_watch_01` defines the seller price `$40`, true restored value `$118`, starting range `$20–$80` and a silver `925` clue. `vintage_camera_01` defines a `$55` purchase, `$176` restored value, a multi-coated lens clue, a rare serial-plate clue and its own restoration thresholds. Both use the same GameFlow and transaction guards.
 
-The current Three.js watch is a clearly marked dev placeholder. It proves front/back rotation, a clue hotspot, lighting and material changes. Replace it later with an owned or commissioned GLB/glTF asset with a visible hallmark and appropriate materials.
+The current Three.js watch and camera are clearly marked dev placeholders. They prove front/back rotation, item-specific clue hotspots, lighting and material changes. Replace them later with owned or commissioned GLB/glTF assets with appropriate licenses.
 
 ## Clues and valuation
 
@@ -96,18 +96,17 @@ BUY checks the decision phase, ownership flags and available cash before spendin
 
 ## Known limitations and technical debt
 
-- The watch geometry is a placeholder, not final art.
+- The watch and camera geometry are placeholders, not final art.
 - Audio uses generated oscillator tones instead of final licensed assets.
 - The main JavaScript bundle is above Vite's 500 kB warning threshold; code splitting should be addressed before portal release.
 - The renderer has quality structure and a capped DPR, but a full device profiler and shadow presets are still small.
-- The first slice has no backend, account system, real SDK, monetization or second item.
+- The first two item loops have no backend, account system, real SDK or monetization.
 
 ## Future item order
 
-1. Vintage Camera
-2. Fake Luxury Watch
-3. PixelBox 84
-4. Painting
-5. Mystery Estate Item
+1. Fake Luxury Watch
+2. PixelBox 84
+3. Painting
+4. Mystery Estate Item
 
 The full sequence and milestone gates are in `docs/MVP_ROADMAP.md`.

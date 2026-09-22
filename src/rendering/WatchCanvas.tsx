@@ -4,7 +4,7 @@ import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
 import {profileDevice} from './DeviceProfiler';
 
 interface Props {
-  phase:string; discovered:boolean; condition:number; clueHint:string; devAssetLabel:string;
+  phase:string; discovered:boolean; condition:number; clueHint:string; clueCode:string; clueRotation:number; devAssetLabel:string;
   showDevAsset?:boolean; restoreActiveTool?:string; onRotate:(angle:number)=>void;
   onRestoreStroke?:()=>void; onReveal:()=>void;
 }
@@ -34,7 +34,12 @@ function createDial() {
   const texture=new THREE.CanvasTexture(canvas); texture.colorSpace=THREE.SRGBColorSpace; return texture;
 }
 
-export function WatchCanvas({phase,discovered,condition,clueHint,devAssetLabel,showDevAsset=false,restoreActiveTool,onRotate,onRestoreStroke,onReveal}:Props) {
+const closeToRotation=(angle:number,target:number)=>{
+  const delta=Math.atan2(Math.sin(angle-target),Math.cos(angle-target));
+  return Math.abs(delta)<.48;
+};
+
+export function WatchCanvas({phase,discovered,condition,clueHint,clueCode,clueRotation,devAssetLabel,showDevAsset=false,restoreActiveTool,onRotate,onRestoreStroke,onReveal}:Props) {
   const ref=useRef<HTMLDivElement>(null); const angleRef=useRef(0);
   const phaseRef=useRef(phase); phaseRef.current=phase;
   const conditionRef=useRef(condition); conditionRef.current=condition;
@@ -120,7 +125,7 @@ export function WatchCanvas({phase,discovered,condition,clueHint,devAssetLabel,s
   },[]);
   const rotate=(next:number)=>{angleRef.current=next; setAngle(next); onRotate(next);};
   const end=()=>{drag.current.active=false; setStroke(value=>({...value,active:false}));};
-  const canReveal=Math.abs(Math.sin(angle/2))>.88&&!discovered;
+  const canReveal=!discovered&&closeToRotation(angle,clueRotation);
   return <div className={phase==='RESTORE'&&restoreActiveTool?'watch-stage is-restoring':'watch-stage'} ref={ref}
     tabIndex={phase==='INSPECT'?0:undefined} role={phase==='INSPECT'?'group':undefined} aria-label={clueHint}
     onKeyDown={e=>{if(phase==='INSPECT'&&['ArrowLeft','ArrowRight'].includes(e.key)){e.preventDefault(); rotate(angleRef.current+(e.key==='ArrowRight'?.3:-.3));}}}
@@ -137,7 +142,7 @@ export function WatchCanvas({phase,discovered,condition,clueHint,devAssetLabel,s
       }else rotate(drag.current.angle+(e.clientX-drag.current.x)*.012);
     }} onPointerUp={end} onPointerCancel={end} onLostPointerCapture={end}>
     {phase==='INSPECT'&&!discovered&&<div className="turn-hint" aria-hidden="true">↔</div>}
-    {phase==='INSPECT'&&canReveal&&<button className="clue-hotspot" onPointerDown={e=>e.stopPropagation()} onClick={onReveal}><span>925</span><small>{clueHint}</small></button>}
+    {phase==='INSPECT'&&canReveal&&<button className="clue-hotspot" onPointerDown={e=>e.stopPropagation()} onClick={onReveal}><span>{clueCode}</span><small>{clueHint}</small></button>}
     {phase==='RESTORE'&&stroke.active&&<span className="restore-glint" style={{left:stroke.x+'%',top:stroke.y+'%'}}/>}
     {showDevAsset&&<div className="dev-asset">{devAssetLabel}</div>}
   </div>;

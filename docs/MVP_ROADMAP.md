@@ -6,11 +6,11 @@ The project advances only after the current vertical slice has been assessed for
 
 One polished loop: inspect the watch, find `925`, narrow the estimate, buy for `$40`, brush, polish, appraise at `$118`, sell and receive `$78` profit.
 
-## Phase 2 — Generic Item System
+## Phase 2 — Generic Item System (in progress)
 
 Generalize item definitions, item instances, clues, restoration tools, renderer configuration, localized content and scene composition.
 
-## Phase 3 — Vintage Camera
+## Phase 3 — Vintage Camera (implemented)
 
 Add the second data-driven item with lens inspection and a new clue pattern.
 
