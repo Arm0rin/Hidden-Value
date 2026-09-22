@@ -1,8 +1,9 @@
 import {useEffect,useRef,useState} from 'preact/hooks';
 import * as THREE from 'three';
+import {profileDevice} from './DeviceProfiler';
 interface Props{phase:string; discovered:boolean; condition:number; clueHint:string; devAssetLabel:string; onRotate:(angle:number)=>void; onReveal:()=>void;}
 export function WatchCanvas({phase,discovered,condition,clueHint,devAssetLabel,onRotate,onReveal}:Props){const ref=useRef<HTMLDivElement>(null);const [angle,setAngle]=useState(0);const angleRef=useRef(0);const drag=useRef({active:false,x:0,angle:0});
- useEffect(()=>{if(!ref.current)return;const root=ref.current;const scene=new THREE.Scene();scene.background=new THREE.Color('#171513');const camera=new THREE.PerspectiveCamera(32,1,.1,100);camera.position.set(0,0,5.4);const renderer=new THREE.WebGLRenderer({antialias:true,alpha:true});renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));renderer.outputColorSpace=THREE.SRGBColorSpace;root.appendChild(renderer.domElement);const group=new THREE.Group();scene.add(group);
+ useEffect(()=>{if(!ref.current)return;const root=ref.current;const profile=profileDevice();const scene=new THREE.Scene();scene.background=new THREE.Color('#171513');const camera=new THREE.PerspectiveCamera(32,1,.1,100);camera.position.set(0,0,5.4);const renderer=new THREE.WebGLRenderer({antialias:profile.antialias,alpha:true});renderer.setPixelRatio(profile.pixelRatio);renderer.outputColorSpace=THREE.SRGBColorSpace;root.appendChild(renderer.domElement);const group=new THREE.Group();scene.add(group);
  const key=new THREE.DirectionalLight('#ffe1a5',3);key.position.set(2,3,4);scene.add(key);scene.add(new THREE.AmbientLight('#8e7864',1.6));
  const caseMat=new THREE.MeshStandardMaterial({color:condition>=90?'#c99e5c':condition>=65?'#8f7a5f':'#57504a',metalness:.85,roughness:condition>=90?.2:.55});const caseMesh=new THREE.Mesh(new THREE.CylinderGeometry(1.24,.98,.24,64),caseMat);caseMesh.rotation.x=Math.PI/2;group.add(caseMesh);
  const rim=new THREE.Mesh(new THREE.TorusGeometry(1.08,.08,14,64),new THREE.MeshStandardMaterial({color:'#d9b677',metalness:.9,roughness:.24}));rim.rotation.x=Math.PI/2;rim.position.z=.14;group.add(rim);
