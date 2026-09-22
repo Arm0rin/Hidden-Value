@@ -34,6 +34,7 @@ The first adapter is `WebAdapter`. It uses browser language detection, localStor
 - `AnalyticsService`: provides the event contract with a development console implementation.
 - `AudioService`: provides master/music/sfx/ambient controls and lightweight feedback tones.
 - `LocalizationService`: loads Russian and English dictionaries.
+- `DeviceProfiler`: selects LOW/MEDIUM/HIGH renderer settings and caps DPR for portal devices.
 
 ## GameState schema
 

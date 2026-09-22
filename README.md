@@ -52,6 +52,7 @@ Important modules:
 - `src/content/items/pocketWatch.ts` is the data definition for the first item.
 - `src/systems/ValuationSystem.ts`, `EconomySystem.ts` and `RestorationSystem.ts` contain business rules.
 - `src/rendering/WatchCanvas.tsx` contains the temporary Three.js watch asset and Pointer Events interaction.
+- `src/rendering/DeviceProfiler.ts` selects LOW/MEDIUM/HIGH rendering settings and caps device pixel ratio.
 - `src/services/SaveService.ts` migrates and persists only game state.
 - `src/platform/PlatformAdapter.ts` is the platform boundary.
 
