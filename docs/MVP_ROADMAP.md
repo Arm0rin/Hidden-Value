@@ -14,11 +14,11 @@ Generalize item definitions, item instances, clues, restoration tools, renderer 
 
 Add the second data-driven item with lens inspection and a new clue pattern.
 
-## Phase 4 — Fake Luxury Watch
+## Phase 4 — Fake Luxury Watch (implemented)
 
-Add authenticity inspection, UV clue interaction and a fake/authentic decision.
+Add a suspicious luxury watch with UV and serial inspection clues on the shared item loop.
 
-## Phase 5 — PixelBox 84
+## Phase 5 — PixelBox 84 (next)
 
 Add disassembly and repair decisions for a rare console.
 

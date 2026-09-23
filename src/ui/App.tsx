@@ -4,6 +4,7 @@ import {LocalizationService} from '../services/LocalizationService';
 import {WatchCanvas} from '../rendering/WatchCanvas';
 import {ItemCanvas} from '../rendering/ItemCanvas';
 import {pocketWatch} from '../content/items/pocketWatch';
+import {itemSequence} from '../content/items';
 import type {GameState} from '../core/types';
 import '../styles.css';
 
@@ -40,7 +41,7 @@ export function App({game}:{game:Game}) {
   </main>;
   const sceneTitle=phase==='CLIENT'?itemName:phase==='INSPECT'?t('turn'):phase==='DECISION'?itemName:phase==='RESTORE'?t('restoreHint'):phase==='RESULT'?t('complete'):t('completeHeadlineA');
   const completedCount=state.progression.completedItemIds.length;
-  const hasMoreItems=completedCount<2;
+  const hasMoreItems=completedCount<itemSequence.length;
   return <main className={'shell phase-'+phase.toLowerCase()}>
     {header}
     <div className="progress"><span className={phase==='WORKSHOP'?'active':''}>{t('workshop')}</span><i/><span className={['CLIENT','INSPECT','DECISION'].includes(phase)?'active':''}>{t('client')}</span><i/><span className={['RESTORE','APPRAISE','SELL','RESULT'].includes(phase)?'active':''}>{t('valueStage')}</span></div>

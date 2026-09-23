@@ -1,6 +1,6 @@
 # Hidden Value
 
-Hidden Value is a mobile first hybrid casual game about finding the value that other people overlook. The first playable slice now follows an old pocket watch and a vintage rangefinder camera from an uncertain offer to inspection, purchase, restoration, appraisal and sale.
+Hidden Value is a mobile first hybrid casual game about finding the value that other people overlook. The first playable slice now follows an old pocket watch, a vintage rangefinder camera and a suspicious luxury watch from an uncertain offer to inspection, purchase, restoration, appraisal and sale.
 
 ## Tech stack
 
@@ -49,7 +49,7 @@ Important modules:
 
 - `src/app/Game.ts` owns the vertical slice orchestration.
 - `src/core/GameFlow.ts` owns valid scene transitions.
-- `src/content/items/` contains data definitions for the pocket watch and vintage camera.
+- `src/content/items/` contains data definitions for the pocket watch, vintage camera and suspicious luxury watch.
 - `src/systems/ValuationSystem.ts`, `EconomySystem.ts` and `RestorationSystem.ts` contain business rules.
 - `src/rendering/ItemCanvas.tsx` selects the item renderer; `WatchCanvas.tsx` and `CameraCanvas.tsx` provide the Three.js assets and Pointer Events interaction.
 - `src/rendering/DeviceProfiler.ts` selects LOW/MEDIUM/HIGH rendering settings and caps device pixel ratio.
@@ -84,10 +84,10 @@ The current watch mesh is explicitly a dev placeholder. A final asset should be 
 
 ## Current scope and limitations
 
-The current build contains two data-driven item loops: Pocket Watch and Vintage Camera. It intentionally has no backend, production monetization, platform SDK, collection, auction, second currency or NPC dialogue. Both items use material states for dirty, clean and polished conditions; dirt and scratch mask shaders can be added later without changing the restoration contract.
+The current build contains three data-driven item loops: Pocket Watch, Vintage Camera and Suspicious Luxury Watch. It intentionally has no backend, production monetization, platform SDK, collection, auction, second currency or NPC dialogue. Every item uses the shared timed restoration contract: seven seconds of cleaning followed by five seconds of polishing.
 
 Initial production bundle is currently a small Three.js web build, but the main JavaScript chunk is still above Vite's 500 kB warning threshold. Code splitting and asset loading should be revisited before portal launch.
 
 ## Next milestone
 
-The next milestone is the Fake Luxury Watch with an authenticity and UV inspection pattern. See `docs/MVP_ROADMAP.md` and `docs/HIDDEN_VALUE_HANDOFF.md`.
+The next milestone is PixelBox 84 with disassembly and repair decisions. See `docs/MVP_ROADMAP.md` and `docs/HIDDEN_VALUE_HANDOFF.md`.
