@@ -16,6 +16,7 @@ export function App({game}:{game:Game}) {
   const [debug,setDebug]=useState(new URLSearchParams(location.search).get('debug')==='1');
   const [metaView,setMetaView]=useState<MetaView>('workshop');
   const [inventoryOpen,setInventoryOpen]=useState(false);
+  const [guideOpen,setGuideOpen]=useState(true);
   const loc=useMemo(()=>new LocalizationService(lang),[lang]);
   useEffect(()=>game.bus.on('change',next=>setState({...next as GameState})),[game]);
   const t=(key:string)=>loc.t(key);
@@ -63,6 +64,7 @@ export function App({game}:{game:Game}) {
     {inventoryOpen&&<section className="inventory-panel" aria-label={t('inventory')}><div><small>{t('inventory')}</small><h3>{item?.owned?itemName:t('inventoryEmpty')}</h3><p>{item?.owned?t('condition')+': '+Math.round(condition)+'%':t('inventoryHint')}</p></div>{item?.owned&&<button className="secondary" onClick={()=>setInventoryOpen(false)}>{t('continue')}</button>}</section>}
     <MetaNav view={metaView} setView={setMetaView} t={t}/>
     {metaView!=='workshop'&&<section className="hub-surface"><button className="text-button" onClick={()=>setMetaView('workshop')}>{t('backToGame')}</button>{metaView==='collection'&&<CollectionPanel state={state} t={t}/>} {metaView==='auction'&&<AuctionPanel state={state} t={t}/>} {metaView==='profile'&&<ProfilePanel state={state} xpProgress={xpProgress} t={t}/>}</section>}
+    {!state.tutorial.completed&&guideOpen&&<GuideCard phase={phase} t={t} close={()=>setGuideOpen(false)}/>} 
     <div hidden={metaView!=='workshop'}>
     <div className="progress"><span className={phase==='WORKSHOP'?'active':''}>{t('workshop')}</span><i/><span className={['CLIENT','INSPECT','DECISION'].includes(phase)?'active':''}>{t('client')}</span><i/><span className={['RESTORE','APPRAISE','SELL','RESULT'].includes(phase)?'active':''}>{t('valueStage')}</span></div>
     <section className="scene">
@@ -91,6 +93,8 @@ export function App({game}:{game:Game}) {
 }
 
 function Debug({game,state,close}:{game:Game;state:GameState;close:()=>void}){return <aside className="debug"><button onClick={close}>×</button><b>DEBUG</b><pre>{JSON.stringify(state,null,2)}</pre><button onClick={()=>game.reset()}>Reset save</button><button onClick={()=>game.debugSetCash(999)}>Set cash $999</button><button onClick={()=>game.debugReveal()}>Reveal clue</button></aside>;}
+
+function GuideCard({phase,t,close}:{phase:string;t:Translator;close:()=>void}){const key=phase==='WORKSHOP'?'guideWorkshop':phase==='CLIENT'?'guideClient':phase==='INSPECT'?'guideInspect':phase==='DECISION'?'guideDecision':phase==='RESTORE'?'guideRestore':phase==='APPRAISE'?'guideAppraise':phase==='SELL'?'guideSell':'guideResult';return <aside className="guide-card"><div><small>{t('firstDeal')}</small><p>{t(key)}</p></div><button onClick={close} aria-label={t('closeGuide')}>×</button></aside>;}
 
 type Translator=(key:string)=>string;
 function MetaNav({view,setView,t}:{view:MetaView;setView:(view:MetaView)=>void;t:Translator}){return <nav className="meta-nav" aria-label="Workshop sections">{(['workshop','collection','auction','profile'] as MetaView[]).map(section=><button key={section} className={view===section?'active':''} aria-current={view===section?'page':undefined} onClick={()=>setView(section)}>{t('nav'+section[0].toUpperCase()+section.slice(1))}</button>)}</nav>;}
