@@ -1,6 +1,6 @@
 # Hidden Value
 
-Hidden Value is a mobile first hybrid casual game about finding the value that other people overlook. The first playable slice now follows an old pocket watch, a vintage rangefinder camera, a suspicious luxury watch and a PixelBox 84 console from an uncertain offer to inspection, purchase, restoration, appraisal and sale.
+Hidden Value is a mobile first hybrid casual game about finding the value that other people overlook. The first playable slice now follows an old pocket watch, a vintage rangefinder camera, a suspicious luxury watch, a PixelBox 84 console and a provenance-heavy painting from an uncertain offer to inspection, purchase, restoration, appraisal and sale.
 
 ## Tech stack
 
@@ -49,7 +49,7 @@ Important modules:
 
 - `src/app/Game.ts` owns the vertical slice orchestration.
 - `src/core/GameFlow.ts` owns valid scene transitions.
-- `src/content/items/` contains data definitions for the pocket watch, vintage camera, suspicious luxury watch and PixelBox 84.
+- `src/content/items/` contains data definitions for the pocket watch, vintage camera, suspicious luxury watch, PixelBox 84 and painting.
 - `src/systems/ValuationSystem.ts`, `EconomySystem.ts` and `RestorationSystem.ts` contain business rules.
 - `src/rendering/ItemCanvas.tsx` selects the item renderer; `WatchCanvas.tsx` and `CameraCanvas.tsx` provide the Three.js assets and Pointer Events interaction.
 - `src/rendering/DeviceProfiler.ts` selects LOW/MEDIUM/HIGH rendering settings and caps device pixel ratio.
@@ -84,10 +84,10 @@ The current watch mesh is explicitly a dev placeholder. A final asset should be 
 
 ## Current scope and limitations
 
-The current build contains four data-driven item loops: Pocket Watch, Vintage Camera, Suspicious Luxury Watch and PixelBox 84. PixelBox adds a repair tradeoff before restoration: a cheaper quick repair or a more expensive precision repair with a higher resale value. It intentionally has no backend, production monetization, platform SDK, collection, auction, second currency or NPC dialogue. Every item uses the shared timed restoration contract: seven seconds of cleaning followed by five seconds of polishing.
+The current build contains five data-driven item loops: Pocket Watch, Vintage Camera, Suspicious Luxury Watch, PixelBox 84 and Painting. PixelBox adds a repair tradeoff before restoration: a cheaper quick repair or a more expensive precision repair with a higher resale value. Painting adds provenance clues and a sale decision between guaranteed dealer cash and a risky auction. It intentionally has no backend, production monetization, platform SDK, collection, second currency or NPC dialogue. Every item uses the shared timed restoration contract: seven seconds of cleaning followed by five seconds of polishing.
 
 Initial production bundle is currently a small Three.js web build, but the main JavaScript chunk is still above Vite's 500 kB warning threshold. Code splitting and asset loading should be revisited before portal launch.
 
 ## Next milestone
 
-The next milestone is Painting with provenance inspection and a dealer or auction decision. See `docs/MVP_ROADMAP.md` and `docs/HIDDEN_VALUE_HANDOFF.md`.
+The next milestone is Workshop Meta with progression and collection scaffolding. See `docs/MVP_ROADMAP.md` and `docs/HIDDEN_VALUE_HANDOFF.md`.

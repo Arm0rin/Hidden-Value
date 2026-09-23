@@ -2,6 +2,7 @@ import type {ItemDefinition} from '../core/types';
 import {WatchCanvas} from './WatchCanvas';
 import {CameraCanvas} from './CameraCanvas';
 import {ConsoleCanvas} from './ConsoleCanvas';
+import {PaintingCanvas} from './PaintingCanvas';
 
 interface Props {
   definition:ItemDefinition; phase:string; discovered:boolean; condition:number;
@@ -12,6 +13,7 @@ interface Props {
 
 export function ItemCanvas({definition,...props}:Props){
   if(definition.renderType==='pixelBox')return <ConsoleCanvas {...props}/>;
+  if(definition.renderType==='painting')return <PaintingCanvas {...props}/>;
   if(definition.renderType==='camera')return <CameraCanvas {...props}/>;
   return <WatchCanvas {...props}/>;
 }

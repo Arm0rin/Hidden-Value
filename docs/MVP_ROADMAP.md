@@ -22,11 +22,11 @@ Add a suspicious luxury watch with UV and serial inspection clues on the shared 
 
 Add disassembly clues and a quick versus precision repair decision for a rare console.
 
-## Phase 6 — Painting (next)
+## Phase 6 — Painting (implemented)
 
-Add provenance inspection and the dealer/auction decision.
+Add provenance inspection and the dealer/auction decision with a guaranteed route and a risky high-upside route.
 
-## Phase 7 — Workshop Meta
+## Phase 7 — Workshop Meta (next)
 
 Add workshop progression after the item loop is proven.
 

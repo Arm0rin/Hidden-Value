@@ -171,24 +171,42 @@ export class Game {
 
   async toSell(){if(this.phase==='APPRAISE')await this.go('SELL');}
 
+  async chooseSaleMode(modeId:string){
+    const definition=this.activeDefinition;
+    const item=this.state.activeItem;
+    const mode=definition?.saleOptions?.find(option=>option.id===modeId);
+    if(this.phase!=='SELL'||!definition||!item||!mode||item.saleModeId)return false;
+    item.saleModeId=mode.id;
+    await this.saveService.save(this.state);
+    this.analytics.track('sale_mode_selected',{itemId:definition.id,modeId:mode.id});
+    this.bus.emit('change',this.state);
+    return true;
+  }
+
   async sell(){
     const definition=this.activeDefinition;
     if(this.phase!=='SELL'||!this.state.activeItem||!definition||!this.state.activeItem.owned||this.state.activeItem.sold)return false;
     const repairOption=definition.repairOptions?.find(option=>option.id===this.state.activeItem!.repairOptionId);
     if(definition.repairOptions?.length&&!repairOption)return false;
-    const amount=definition.trueValue+(repairOption?.valueBonus??0);
+    const saleMode=definition.saleOptions?.find(option=>option.id===this.state.activeItem!.saleModeId);
+    if(definition.saleOptions?.length&&!saleMode)return false;
+    const auctionSuccess=Boolean(saleMode&&saleMode.successValue!==saleMode.fallbackValue&&Math.random()<saleMode.successChance);
+    const amount=saleMode?(auctionSuccess?saleMode.successValue:saleMode.fallbackValue):definition.trueValue+(repairOption?.valueBonus??0);
     const repairCost=repairOption?.cost??0;
+    const saleCost=saleMode?.fee??0;
+    this.state.activeItem.saleValue=amount;
+    this.state.activeItem.saleCost=repairCost+saleCost;
     this.state.activeItem.sold=true;
     this.state.activeItem.owned=false;
     this.economy.earn(amount,'sell_item');
     this.state.player.xp+=25;
     this.state.stats.itemsSold+=1;
-    this.state.stats.totalProfit+=amount-definition.purchasePrice-repairCost;
+    this.state.stats.totalProfit+=amount-definition.purchasePrice-repairCost-saleCost;
     this.state.progression.completedItems+=1;
     if(!this.state.progression.completedItemIds.includes(definition.id))this.state.progression.completedItemIds.push(definition.id);
     this.state.tutorial.completed=true;
-    this.analytics.track('item_sold',{itemId:definition.id,cash:this.state.player.cash});
-    this.analytics.track('item_completed',{itemId:definition.id,profit:amount-definition.purchasePrice-repairCost});
+    this.analytics.track('item_sold',{itemId:definition.id,cash:this.state.player.cash,saleMode:saleMode?.id,saleValue:amount});
+    this.analytics.track('item_completed',{itemId:definition.id,profit:amount-definition.purchasePrice-repairCost-saleCost});
     this.audio.tone('transaction');
     await this.saveService.save(this.state);
     await this.go('RESULT');

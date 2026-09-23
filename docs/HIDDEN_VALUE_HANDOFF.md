@@ -4,7 +4,7 @@
 
 Hidden Value is a premium casual game about discovering the hidden value of old, dirty or suspicious objects. The player's pleasure comes from reducing uncertainty: inspect an object, find a clue, narrow the valuation range, make a purchase decision, restore the object and sell it for a profit.
 
-The current MVP proves the item loop with an old silver pocket watch, a vintage rangefinder camera, a suspicious luxury watch and a PixelBox 84 console. Each item is selected from a shared data contract, while its renderer, clue pattern and optional repair decision remain distinct.
+The current MVP proves the item loop with an old silver pocket watch, a vintage rangefinder camera, a suspicious luxury watch, a PixelBox 84 console and a provenance-heavy painting. Each item is selected from a shared data contract, while its renderer, clue pattern and optional repair or sale decision remain distinct.
 
 ## Current core loop
 
@@ -78,7 +78,7 @@ No production ad or purchase flow is surfaced in the current slice.
 
 ## ItemDefinition and item data
 
-Items are data-driven. `pocket_watch_01` defines the seller price `$40`, true restored value `$118`, starting range `$20–$80` and a silver `925` clue. `vintage_camera_01` defines a `$55` purchase, `$176` restored value, a multi-coated lens clue and a rare serial-plate clue. `fake_luxury_watch_01` defines a `$24` purchase, `$42` restored value and UV/serial replica clues. `pixel_box_84` defines a `$46` purchase, a rare revision clue set and quick versus precision repair options. All use the same GameFlow, timed restoration contract and transaction guards.
+Items are data-driven. `pocket_watch_01` defines the seller price `$40`, true restored value `$118`, starting range `$20–$80` and a silver `925` clue. `vintage_camera_01` defines a `$55` purchase, `$176` restored value, a multi-coated lens clue and a rare serial-plate clue. `fake_luxury_watch_01` defines a `$24` purchase, `$42` restored value and UV/serial replica clues. `pixel_box_84` defines a `$46` purchase, a rare revision clue set and quick versus precision repair options. `painting_47` defines a `$75` purchase, provenance clues and dealer versus auction sale options. All use the same GameFlow, timed restoration contract and transaction guards.
 
 The current Three.js watch and camera are clearly marked dev placeholders. They prove front/back rotation, item-specific clue hotspots, lighting and material changes. Replace them later with owned or commissioned GLB/glTF assets with appropriate licenses.
 
@@ -88,7 +88,7 @@ The silver hallmark is a data clue with an id, localized labels, position and va
 
 ## Restoration
 
-Restoration is driven by elapsed pointer movement rather than item-specific stroke counts. Cleaning takes seven seconds and polishing takes five seconds for every current and future item. PixelBox adds a repair decision before the tools become available: quick repair costs `$8`, while precision repair costs `$24` and increases resale value by `$38`. The temporary renderers use dirty, clean and polished material states. The system is ready for a future dirt, oxidation, scratch and roughness mask implementation.
+Restoration is driven by elapsed pointer movement rather than item-specific stroke counts. Cleaning takes seven seconds and polishing takes five seconds for every current and future item. PixelBox adds a repair decision before the tools become available: quick repair costs `$8`, while precision repair costs `$24` and increases resale value by `$38`. Painting adds a sale decision after restoration: dealer sale is guaranteed at `$190`, while auction has a 58% chance of `$285`, a `$105` fallback and a `$12` fee. The temporary renderers use dirty, clean and polished material states. The system is ready for a future dirt, oxidation, scratch and roughness mask implementation.
 
 ## Transaction safety
 
@@ -104,7 +104,8 @@ BUY checks the decision phase, ownership flags and available cash before spendin
 
 ## Future item order
 
-1. Painting
-2. Mystery Estate Item
+1. Workshop Meta
+2. Collections
+3. Auction House expansion
 
 The full sequence and milestone gates are in `docs/MVP_ROADMAP.md`.
