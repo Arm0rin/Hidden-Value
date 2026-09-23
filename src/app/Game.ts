@@ -125,14 +125,19 @@ export class Game {
 
   selectTool(tool:RestorationTool){
     if(this.phase!=='RESTORE'||!this.state.activeItem)return;
+    const definition=this.activeDefinition;
+    const stepIndex=definition?.restorationSteps.findIndex(step=>step.tool===tool)??-1;
+    if(stepIndex>0&&this.state.activeItem.condition<definition!.restorationSteps[stepIndex-1].targetCondition)return;
+    if(this.state.activeItem.activeTool!==tool)this.state.activeItem.toolProgress=0;
     this.restoration.selectTool(this.state.activeItem,tool);
     this.bus.emit('change',this.state);
   }
 
-  async stroke(){
+  async stroke(deltaMs?:number){
     const definition=this.activeDefinition;
     if(this.phase!=='RESTORE'||!this.state.activeItem||!definition)return false;
-    const done=this.restoration.stroke(definition,this.state.activeItem);
+    const step=definition.restorationSteps.find(candidate=>candidate.tool===this.state.activeItem!.activeTool);
+    const done=this.restoration.work(definition,this.state.activeItem,deltaMs??step?.durationMs??250);
     if(done){
       this.analytics.track('restoration_step_completed',{itemId:definition.id,tool:this.state.activeItem.activeTool,condition:this.state.activeItem.condition});
       this.state.activeItem.activeTool=undefined;

@@ -31,7 +31,7 @@ export const vintageCamera:ItemDefinition={
     }
   ],
   restorationSteps:[
-    {tool:'brush',targetCondition:65,strokes:5},
-    {tool:'polish',targetCondition:92,strokes:5}
+    {tool:'brush',targetCondition:65,durationMs:7000},
+    {tool:'polish',targetCondition:92,durationMs:5000}
   ]
 };

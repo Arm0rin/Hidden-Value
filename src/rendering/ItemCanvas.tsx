@@ -6,7 +6,7 @@ interface Props {
   definition:ItemDefinition; phase:string; discovered:boolean; condition:number;
   clueHint:string; clueCode:string; clueRotation:number; devAssetLabel:string;
   showDevAsset?:boolean; restoreActiveTool?:string; onRotate:(angle:number)=>void;
-  onRestoreStroke?:()=>void; onReveal:()=>void;
+  onRestoreStroke?:(deltaMs:number)=>void; onReveal:()=>void;
 }
 
 export function ItemCanvas({definition,...props}:Props){

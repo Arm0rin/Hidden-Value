@@ -6,7 +6,7 @@ import {profileDevice} from './DeviceProfiler';
 interface Props {
   phase:string; discovered:boolean; condition:number; clueHint:string; clueCode:string;
   clueRotation:number; devAssetLabel:string; showDevAsset?:boolean; restoreActiveTool?:string;
-  onRotate:(angle:number)=>void; onRestoreStroke?:()=>void; onReveal:()=>void;
+  onRotate:(angle:number)=>void; onRestoreStroke?:(deltaMs:number)=>void; onReveal:()=>void;
 }
 
 const closeToRotation=(angle:number,target:number)=>{
@@ -17,7 +17,7 @@ const closeToRotation=(angle:number,target:number)=>{
 export function CameraCanvas({phase,discovered,condition,clueHint,clueCode,clueRotation,devAssetLabel,showDevAsset=false,restoreActiveTool,onRotate,onRestoreStroke,onReveal}:Props){
   const ref=useRef<HTMLDivElement>(null); const angleRef=useRef(0); const phaseRef=useRef(phase); phaseRef.current=phase;
   const conditionRef=useRef(condition); conditionRef.current=condition; const [angle,setAngle]=useState(0);
-  const [stroke,setStroke]=useState({x:50,y:50,active:false}); const drag=useRef({active:false,x:0,y:0,angle:0});
+  const [stroke,setStroke]=useState({x:50,y:50,active:false}); const drag=useRef({active:false,x:0,y:0,angle:0,lastTime:0});
   useEffect(()=>{
     const root=ref.current;if(!root)return;const profile=profileDevice();const scene=new THREE.Scene();
     const camera=new THREE.PerspectiveCamera(31,1,.1,30);camera.position.set(0,.05,6);
@@ -81,8 +81,8 @@ export function CameraCanvas({phase,discovered,condition,clueHint,clueCode,clueR
   return <div className={phase==='RESTORE'&&restoreActiveTool?'watch-stage is-restoring':'watch-stage'} ref={ref}
     tabIndex={phase==='INSPECT'?0:undefined} role={phase==='INSPECT'?'group':undefined} aria-label={clueHint}
     onKeyDown={e=>{if(phase==='INSPECT'&&['ArrowLeft','ArrowRight'].includes(e.key)){e.preventDefault();rotate(angleRef.current+(e.key==='ArrowRight'?.3:-.3));}}}
-    onPointerDown={e=>{if(phase!=='INSPECT'&&phase!=='RESTORE'||phase==='RESTORE'&&!restoreActiveTool)return;e.currentTarget.setPointerCapture(e.pointerId);drag.current={active:true,x:e.clientX,y:e.clientY,angle:angleRef.current};}}
-    onPointerMove={e=>{if(!drag.current.active)return;if(phase==='RESTORE'){const bounds=e.currentTarget.getBoundingClientRect();setStroke({x:(e.clientX-bounds.left)/bounds.width*100,y:(e.clientY-bounds.top)/bounds.height*100,active:true});if(Math.hypot(e.clientX-drag.current.x,e.clientY-drag.current.y)>24){drag.current.x=e.clientX;drag.current.y=e.clientY;onRestoreStroke?.();}}else rotate(drag.current.angle+(e.clientX-drag.current.x)*.012);}}
+    onPointerDown={e=>{if(phase!=='INSPECT'&&phase!=='RESTORE'||phase==='RESTORE'&&!restoreActiveTool)return;e.currentTarget.setPointerCapture(e.pointerId);drag.current={active:true,x:e.clientX,y:e.clientY,angle:angleRef.current,lastTime:performance.now()};}}
+    onPointerMove={e=>{if(!drag.current.active)return;if(phase==='RESTORE'){const bounds=e.currentTarget.getBoundingClientRect();setStroke({x:(e.clientX-bounds.left)/bounds.width*100,y:(e.clientY-bounds.top)/bounds.height*100,active:true});const now=performance.now();const delta=Math.min(120,Math.max(0,now-drag.current.lastTime));drag.current.lastTime=now;if(Math.hypot(e.clientX-drag.current.x,e.clientY-drag.current.y)>3){drag.current.x=e.clientX;drag.current.y=e.clientY;onRestoreStroke?.(delta);}}else rotate(drag.current.angle+(e.clientX-drag.current.x)*.012);}}
     onPointerUp={end} onPointerCancel={end} onLostPointerCapture={end}>
     {phase==='INSPECT'&&!discovered&&<div className="turn-hint" aria-hidden="true">↔</div>}
     {phase==='INSPECT'&&canReveal&&<button className="clue-hotspot" onPointerDown={e=>e.stopPropagation()} onClick={onReveal}><span>{clueCode}</span><small>{clueHint}</small></button>}
