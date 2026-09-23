@@ -200,8 +200,17 @@ export class Game {
     this.state.activeItem.owned=false;
     this.economy.earn(amount,'sell_item');
     this.state.player.xp+=25;
+    const previousPlayerLevel=this.state.player.level;
+    this.state.player.level=Math.max(1,1+Math.floor(this.state.player.xp/50));
+    if(this.state.player.level>previousPlayerLevel)this.analytics.track('player_level_up',{level:this.state.player.level});
     this.state.stats.itemsSold+=1;
     this.state.stats.totalProfit+=amount-definition.purchasePrice-repairCost-saleCost;
+    if(saleMode?.id==='auction'){
+      this.state.stats.auctionAttempts+=1;
+      if(auctionSuccess)this.state.stats.auctionWins+=1;
+      this.state.stats.auctionRevenue+=amount;
+      this.state.stats.auctionHistory.push({itemId:definition.id,value:amount,success:auctionSuccess});
+    }
     this.state.progression.completedItems+=1;
     const previousWorkshopLevel=this.state.workshop.level;
     this.state.workshop.level=Math.max(1,1+Math.floor(this.state.progression.completedItems/2));

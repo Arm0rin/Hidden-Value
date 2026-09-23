@@ -30,17 +30,17 @@ Add provenance inspection and the dealer/auction decision with a guaranteed rout
 
 Track workshop level, collection progress and the next collection goal between item loops.
 
-## Phase 8 — Collections (next)
+## Phase 8 — Collections (implemented)
 
-Add collection storage and display after enough items exist.
+Add persistent collection storage and a full collection display with found and undiscovered item states.
 
-## Phase 9 — Auction
+## Phase 9 — Auction (implemented)
 
-Add the auction loop and risk/reward choices.
+Add the painting auction risk/reward route plus a persistent Auction House ledger with attempts, high-bid rate, revenue and history.
 
-## Phase 10 — 30-minute onboarding
+## Phase 10 — Profile and 30-minute onboarding (profile implemented; onboarding next)
 
-Connect the first several item stories into a guided first session with optional actions kept secondary to the main loop.
+Expose player XP/level, workshop level, cash, sales and total profit in the Profile hub. Connect the first several item stories into a guided first session with optional actions kept secondary to the main loop.
 
 ## Phase 11 — Production save and analytics
 
