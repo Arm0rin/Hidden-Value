@@ -84,10 +84,10 @@ The current watch mesh is explicitly a dev placeholder. A final asset should be 
 
 ## Current scope and limitations
 
-The current build contains five data-driven item loops: Pocket Watch, Vintage Camera, Suspicious Luxury Watch, PixelBox 84 and Painting. PixelBox adds a repair tradeoff before restoration: a cheaper quick repair or a more expensive precision repair with a higher resale value. Painting adds provenance clues and a sale decision between guaranteed dealer cash and a risky auction. It intentionally has no backend, production monetization, platform SDK, collection, second currency or NPC dialogue. Every item uses the shared timed restoration contract: seven seconds of cleaning followed by five seconds of polishing.
+The current build contains five data-driven item loops: Pocket Watch, Vintage Camera, Suspicious Luxury Watch, PixelBox 84 and Painting. PixelBox adds a repair tradeoff before restoration: a cheaper quick repair or a more expensive precision repair with a higher resale value. Painting adds provenance clues and a sale decision between guaranteed dealer cash and a risky auction. The workshop now tracks level, collection progress and the next collection goal between deals. It intentionally has no backend, production monetization, platform SDK, second currency or NPC dialogue. Every item uses the shared timed restoration contract: seven seconds of cleaning followed by five seconds of polishing.
 
 Initial production bundle is currently a small Three.js web build, but the main JavaScript chunk is still above Vite's 500 kB warning threshold. Code splitting and asset loading should be revisited before portal launch.
 
 ## Next milestone
 
-The next milestone is Workshop Meta with progression and collection scaffolding. See `docs/MVP_ROADMAP.md` and `docs/HIDDEN_VALUE_HANDOFF.md`.
+The next milestone is the Collection and Auction House expansion. See `docs/MVP_ROADMAP.md` and `docs/HIDDEN_VALUE_HANDOFF.md`.

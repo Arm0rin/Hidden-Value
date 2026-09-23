@@ -203,6 +203,9 @@ export class Game {
     this.state.stats.itemsSold+=1;
     this.state.stats.totalProfit+=amount-definition.purchasePrice-repairCost-saleCost;
     this.state.progression.completedItems+=1;
+    const previousWorkshopLevel=this.state.workshop.level;
+    this.state.workshop.level=Math.max(1,1+Math.floor(this.state.progression.completedItems/2));
+    if(this.state.workshop.level>previousWorkshopLevel)this.analytics.track('workshop_level_up',{level:this.state.workshop.level});
     if(!this.state.progression.completedItemIds.includes(definition.id))this.state.progression.completedItemIds.push(definition.id);
     this.state.tutorial.completed=true;
     this.analytics.track('item_sold',{itemId:definition.id,cash:this.state.player.cash,saleMode:saleMode?.id,saleValue:amount});

@@ -91,6 +91,10 @@
   "soldStage": "SOLD",
   "appraisalStage": "APPRAISAL",
   "profitShort": "PROFIT",
+  "collection": "COLLECTION",
+  "nextGoal": "NEXT GOAL",
+  "collectionGoal": "Find {item}.",
+  "collectionComplete": "The collection is complete.",
   "resultSummary": "XP +25 · Value $118",
   "clueTap": "tap to inspect"
 }

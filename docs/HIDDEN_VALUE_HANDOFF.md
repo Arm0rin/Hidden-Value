@@ -4,7 +4,7 @@
 
 Hidden Value is a premium casual game about discovering the hidden value of old, dirty or suspicious objects. The player's pleasure comes from reducing uncertainty: inspect an object, find a clue, narrow the valuation range, make a purchase decision, restore the object and sell it for a profit.
 
-The current MVP proves the item loop with an old silver pocket watch, a vintage rangefinder camera, a suspicious luxury watch, a PixelBox 84 console and a provenance-heavy painting. Each item is selected from a shared data contract, while its renderer, clue pattern and optional repair or sale decision remain distinct.
+The current MVP proves the item loop with an old silver pocket watch, a vintage rangefinder camera, a suspicious luxury watch, a PixelBox 84 console and a provenance-heavy painting. Each item is selected from a shared data contract, while its renderer, clue pattern and optional repair or sale decision remain distinct. The Workshop scene now anchors progression with a persistent level, collection strip and next-item goal.
 
 ## Current core loop
 
@@ -35,6 +35,7 @@ The first adapter is `WebAdapter`. It uses browser language detection, localStor
 - `AudioService`: provides master/music/sfx/ambient controls and lightweight feedback tones.
 - `LocalizationService`: loads Russian and English dictionaries.
 - `DeviceProfiler`: selects LOW/MEDIUM/HIGH renderer settings and caps DPR for portal devices.
+- Workshop meta: derives level from completed items and displays collection progress from `completedItemIds`.
 
 ## GameState schema
 

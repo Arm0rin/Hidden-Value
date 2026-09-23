@@ -91,6 +91,10 @@
   "soldStage": "ПРОДАНО",
   "appraisalStage": "ОЦЕНКА",
   "profitShort": "ПРИБЫЛЬ",
+  "collection": "КОЛЛЕКЦИЯ",
+  "nextGoal": "СЛЕДУЮЩАЯ ЦЕЛЬ",
+  "collectionGoal": "Найди: {item}.",
+  "collectionComplete": "Коллекция собрана.",
   "resultSummary": "XP +25 · Стоимость $118",
   "clueTap": "нажмите для осмотра"
 }

@@ -26,11 +26,11 @@ Add disassembly clues and a quick versus precision repair decision for a rare co
 
 Add provenance inspection and the dealer/auction decision with a guaranteed route and a risky high-upside route.
 
-## Phase 7 — Workshop Meta (next)
+## Phase 7 — Workshop Meta (implemented)
 
-Add workshop progression after the item loop is proven.
+Track workshop level, collection progress and the next collection goal between item loops.
 
-## Phase 8 — Collections
+## Phase 8 — Collections (next)
 
 Add collection storage and display after enough items exist.
 
