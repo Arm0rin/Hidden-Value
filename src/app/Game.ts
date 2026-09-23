@@ -126,11 +126,26 @@ export class Game {
   selectTool(tool:RestorationTool){
     if(this.phase!=='RESTORE'||!this.state.activeItem)return;
     const definition=this.activeDefinition;
+    if(definition?.repairOptions?.length&&!this.state.activeItem.repairOptionId)return;
     const stepIndex=definition?.restorationSteps.findIndex(step=>step.tool===tool)??-1;
     if(stepIndex>0&&this.state.activeItem.condition<definition!.restorationSteps[stepIndex-1].targetCondition)return;
     if(this.state.activeItem.activeTool!==tool)this.state.activeItem.toolProgress=0;
     this.restoration.selectTool(this.state.activeItem,tool);
     this.bus.emit('change',this.state);
+  }
+
+  async chooseRepair(optionId:string){
+    const definition=this.activeDefinition;
+    const item=this.state.activeItem;
+    const option=definition?.repairOptions?.find(candidate=>candidate.id===optionId);
+    if(this.phase!=='RESTORE'||!definition||!item||!option||item.repairOptionId||item.activeTool)return false;
+    if(!this.economy.spend(option.cost,'repair_item'))return false;
+    item.repairOptionId=option.id;
+    await this.saveService.save(this.state);
+    this.analytics.track('repair_option_selected',{itemId:definition.id,optionId:option.id,cost:option.cost});
+    this.audio.tone('transaction');
+    this.bus.emit('change',this.state);
+    return true;
   }
 
   async stroke(deltaMs?:number){
@@ -159,18 +174,21 @@ export class Game {
   async sell(){
     const definition=this.activeDefinition;
     if(this.phase!=='SELL'||!this.state.activeItem||!definition||!this.state.activeItem.owned||this.state.activeItem.sold)return false;
-    const amount=definition.trueValue;
+    const repairOption=definition.repairOptions?.find(option=>option.id===this.state.activeItem!.repairOptionId);
+    if(definition.repairOptions?.length&&!repairOption)return false;
+    const amount=definition.trueValue+(repairOption?.valueBonus??0);
+    const repairCost=repairOption?.cost??0;
     this.state.activeItem.sold=true;
     this.state.activeItem.owned=false;
     this.economy.earn(amount,'sell_item');
     this.state.player.xp+=25;
     this.state.stats.itemsSold+=1;
-    this.state.stats.totalProfit+=amount-definition.purchasePrice;
+    this.state.stats.totalProfit+=amount-definition.purchasePrice-repairCost;
     this.state.progression.completedItems+=1;
     if(!this.state.progression.completedItemIds.includes(definition.id))this.state.progression.completedItemIds.push(definition.id);
     this.state.tutorial.completed=true;
     this.analytics.track('item_sold',{itemId:definition.id,cash:this.state.player.cash});
-    this.analytics.track('item_completed',{itemId:definition.id,profit:amount-definition.purchasePrice});
+    this.analytics.track('item_completed',{itemId:definition.id,profit:amount-definition.purchasePrice-repairCost});
     this.audio.tone('transaction');
     await this.saveService.save(this.state);
     await this.go('RESULT');

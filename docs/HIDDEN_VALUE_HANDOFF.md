@@ -4,7 +4,7 @@
 
 Hidden Value is a premium casual game about discovering the hidden value of old, dirty or suspicious objects. The player's pleasure comes from reducing uncertainty: inspect an object, find a clue, narrow the valuation range, make a purchase decision, restore the object and sell it for a profit.
 
-The current MVP proves the item loop with an old silver pocket watch, a vintage rangefinder camera and a suspicious luxury watch. Each item is selected from a shared data contract, while its renderer and clue pattern remain distinct.
+The current MVP proves the item loop with an old silver pocket watch, a vintage rangefinder camera, a suspicious luxury watch and a PixelBox 84 console. Each item is selected from a shared data contract, while its renderer, clue pattern and optional repair decision remain distinct.
 
 ## Current core loop
 
@@ -29,7 +29,7 @@ The first adapter is `WebAdapter`. It uses browser language detection, localStor
 
 - `ValuationSystem`: returns `trueValue`, `knownMin`, `knownMax` and confidence from the latest discovered clue.
 - `EconomySystem`: checks balance and applies spend/earn operations.
-- `RestorationSystem`: reusable timed brush and polish tools update condition and visual material state. Every item requires seven seconds of cleaning and five seconds of polishing.
+- `RestorationSystem`: reusable timed brush and polish tools update condition and visual material state. Every item requires seven seconds of cleaning and five seconds of polishing. Items may also expose data-driven repair options before restoration.
 - `SaveService`: handles empty, corrupt and partial saves and writes `saveVersion`.
 - `AnalyticsService`: provides the event contract with a development console implementation.
 - `AudioService`: provides master/music/sfx/ambient controls and lightweight feedback tones.
@@ -78,7 +78,7 @@ No production ad or purchase flow is surfaced in the current slice.
 
 ## ItemDefinition and item data
 
-Items are data-driven. `pocket_watch_01` defines the seller price `$40`, true restored value `$118`, starting range `$20–$80` and a silver `925` clue. `vintage_camera_01` defines a `$55` purchase, `$176` restored value, a multi-coated lens clue and a rare serial-plate clue. `fake_luxury_watch_01` defines a `$24` purchase, `$42` restored value and UV/serial replica clues. All use the same GameFlow, timed restoration contract and transaction guards.
+Items are data-driven. `pocket_watch_01` defines the seller price `$40`, true restored value `$118`, starting range `$20–$80` and a silver `925` clue. `vintage_camera_01` defines a `$55` purchase, `$176` restored value, a multi-coated lens clue and a rare serial-plate clue. `fake_luxury_watch_01` defines a `$24` purchase, `$42` restored value and UV/serial replica clues. `pixel_box_84` defines a `$46` purchase, a rare revision clue set and quick versus precision repair options. All use the same GameFlow, timed restoration contract and transaction guards.
 
 The current Three.js watch and camera are clearly marked dev placeholders. They prove front/back rotation, item-specific clue hotspots, lighting and material changes. Replace them later with owned or commissioned GLB/glTF assets with appropriate licenses.
 
@@ -88,7 +88,7 @@ The silver hallmark is a data clue with an id, localized labels, position and va
 
 ## Restoration
 
-Restoration is driven by elapsed pointer movement rather than item-specific stroke counts. Cleaning takes seven seconds and polishing takes five seconds for every current and future item. The temporary renderer uses dirty, clean and polished material states. The system is ready for a future dirt, oxidation, scratch and roughness mask implementation.
+Restoration is driven by elapsed pointer movement rather than item-specific stroke counts. Cleaning takes seven seconds and polishing takes five seconds for every current and future item. PixelBox adds a repair decision before the tools become available: quick repair costs `$8`, while precision repair costs `$24` and increases resale value by `$38`. The temporary renderers use dirty, clean and polished material states. The system is ready for a future dirt, oxidation, scratch and roughness mask implementation.
 
 ## Transaction safety
 
@@ -104,8 +104,7 @@ BUY checks the decision phase, ownership flags and available cash before spendin
 
 ## Future item order
 
-1. PixelBox 84
-2. Painting
-3. Mystery Estate Item
+1. Painting
+2. Mystery Estate Item
 
 The full sequence and milestone gates are in `docs/MVP_ROADMAP.md`.

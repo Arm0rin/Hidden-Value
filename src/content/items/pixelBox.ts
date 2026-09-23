@@ -1,0 +1,41 @@
+import type { ItemDefinition } from '../../core/types';
+
+export const pixelBox:ItemDefinition={
+  id:'pixel_box_84',
+  category:'retro-console',
+  renderType:'pixelBox',
+  displayNameKey:'item.pixelBox.name',
+  purchasePrice:46,
+  trueValue:110,
+  startingCondition:28,
+  startingValuation:{min:35,max:135},
+  finalCondition:94,
+  clues:[
+    {
+      id:'cartridge_mark',
+      code:'84',
+      labelKey:'clue.cartridge',
+      valueKey:'clue.rareRun',
+      position:[-.28,.12,.15],
+      requiredRotation:0,
+      valuation:{min:78,max:150}
+    },
+    {
+      id:'board_serial',
+      code:'REV.B',
+      labelKey:'clue.board',
+      valueKey:'clue.factoryRevision',
+      position:[0,-.2,-.15],
+      requiredRotation:Math.PI,
+      valuation:{min:98,max:156}
+    }
+  ],
+  repairOptions:[
+    {id:'quick_repair',labelKey:'quickRepair',descriptionKey:'quickRepairHint',cost:8,valueBonus:0},
+    {id:'precision_repair',labelKey:'precisionRepair',descriptionKey:'precisionRepairHint',cost:24,valueBonus:38}
+  ],
+  restorationSteps:[
+    {tool:'brush',targetCondition:66,durationMs:7000},
+    {tool:'polish',targetCondition:94,durationMs:5000}
+  ]
+};

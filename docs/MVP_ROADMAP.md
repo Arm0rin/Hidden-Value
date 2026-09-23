@@ -18,11 +18,11 @@ Add the second data-driven item with lens inspection and a new clue pattern.
 
 Add a suspicious luxury watch with UV and serial inspection clues on the shared item loop.
 
-## Phase 5 — PixelBox 84 (next)
+## Phase 5 — PixelBox 84 (implemented)
 
-Add disassembly and repair decisions for a rare console.
+Add disassembly clues and a quick versus precision repair decision for a rare console.
 
-## Phase 6 — Painting
+## Phase 6 — Painting (next)
 
 Add provenance inspection and the dealer/auction decision.
 
