@@ -1,0 +1,4 @@
+{
+  "compilerOptions": {"target":"ES2022","useDefineForClassFields":true,"module":"ESNext","moduleResolution":"Bundler","allowImportingTsExtensions":true,"verbatimModuleSyntax":true,"jsx":"react-jsx","jsxImportSource":"preact","strict":true,"noEmit":true,"skipLibCheck":true,"resolveJsonModule":true,"types":["vitest/globals"]},
+  "include":["src","tests","vite.config.ts"]
+}

@@ -1,0 +1,2 @@
+import type {ItemDefinition,ItemInstance,Valuation} from '../core/types';
+export class ValuationSystem { evaluate(def:ItemDefinition,item:ItemInstance):Valuation{const clue=[...def.clues].reverse().find(c=>item.discoveredClueIds.includes(c.id));const range=clue?.valuation??def.startingValuation;const confidence=clue?Math.min(.94,.66+item.discoveredClueIds.length*.16):.32;return {trueValue:def.trueValue,knownMin:range.min,knownMax:range.max,confidence};} }

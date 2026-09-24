@@ -1,0 +1,41 @@
+import type { ItemDefinition } from '../../core/types';
+
+export const painting:ItemDefinition={
+  id:'painting_47',
+  category:'painting',
+  renderType:'painting',
+  displayNameKey:'item.painting.name',
+  purchasePrice:75,
+  trueValue:190,
+  startingCondition:32,
+  startingValuation:{min:40,max:220},
+  finalCondition:93,
+  clues:[
+    {
+      id:'provenance_card',
+      code:'1947',
+      labelKey:'clue.provenance',
+      valueKey:'clue.studioArchive',
+      position:[-.2,.12,.12],
+      requiredRotation:0,
+      valuation:{min:145,max:230}
+    },
+    {
+      id:'gallery_stamp',
+      code:'ATELIER',
+      labelKey:'clue.gallery',
+      valueKey:'clue.galleryStamp',
+      position:[0,-.16,-.12],
+      requiredRotation:Math.PI,
+      valuation:{min:175,max:260}
+    }
+  ],
+  saleOptions:[
+    {id:'dealer',labelKey:'dealerSale',descriptionKey:'dealerSaleHint',successValue:190,fallbackValue:190,successChance:1,fee:0},
+    {id:'auction',labelKey:'auctionSale',descriptionKey:'auctionSaleHint',successValue:285,fallbackValue:105,successChance:.58,fee:12}
+  ],
+  restorationSteps:[
+    {tool:'brush',targetCondition:66,durationMs:7000},
+    {tool:'polish',targetCondition:93,durationMs:5000}
+  ]
+};

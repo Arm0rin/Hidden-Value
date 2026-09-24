@@ -1,0 +1,3 @@
+import type {FlowPhase} from './types';
+const transitions:Record<FlowPhase,FlowPhase[]>={BOOT:['TITLE'],TITLE:['WORKSHOP'],WORKSHOP:['CLIENT'],CLIENT:['INSPECT'],INSPECT:['DECISION'],DECISION:['BUY','CLIENT'],BUY:['RESTORE'],RESTORE:['APPRAISE'],APPRAISE:['SELL'],SELL:['RESULT'],RESULT:['WORKSHOP']};
+export class GameFlow { constructor(private phase:FlowPhase='BOOT'){} getPhase(){return this.phase;} canTransition(to:FlowPhase){return transitions[this.phase].includes(to);} transition(to:FlowPhase){if(!this.canTransition(to)) throw new Error(`Invalid transition ${this.phase} -> ${to}`);this.phase=to;return this.phase;} restore(phase:FlowPhase){this.phase=phase;} }
