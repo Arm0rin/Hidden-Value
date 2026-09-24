@@ -23,11 +23,12 @@ export class Game {
   state=createDefaultState();
   flow=new GameFlow('BOOT');
   economy!:EconomySystem;
+  private rejectedItemIds=new Set<string>();
 
   get phase(){return this.flow.getPhase();}
   get activeDefinition():ItemDefinition|null{return this.state.activeItemId?itemDefinitions[this.state.activeItemId]??null:null;}
 
-  private nextDefinition(){return itemSequence.find(def=>!this.state.progression.completedItemIds.includes(def.id));}
+  private nextDefinition(){return itemSequence.find(def=>!this.state.progression.completedItemIds.includes(def.id)&&!this.rejectedItemIds.has(def.id));}
 
   private createItem(definition:ItemDefinition){
     this.state.activeItemId=definition.id;
@@ -121,7 +122,14 @@ export class Game {
     return true;
   }
 
-  async refuse(){if(this.phase==='DECISION'){await this.go('CLIENT');return true;}return false;}
+  async refuse(){
+    if(this.phase!=='DECISION'||!this.state.activeItemId)return false;
+    this.rejectedItemIds.add(this.state.activeItemId);
+    this.state.activeItem=null;
+    this.state.activeItemId=null;
+    await this.go('CLIENT');
+    return true;
+  }
 
   selectTool(tool:RestorationTool){
     if(this.phase!=='RESTORE'||!this.state.activeItem)return;
@@ -235,6 +243,7 @@ export class Game {
 
   async reset(){
     this.state=createDefaultState();
+    this.rejectedItemIds.clear();
     this.state.phase='TITLE';
     this.flow=new GameFlow('TITLE');
     this.economy=new EconomySystem(this.state);
