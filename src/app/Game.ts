@@ -198,7 +198,8 @@ export class Game {
     this.state.activeItem.saleCost=repairCost+saleCost;
     this.state.activeItem.sold=true;
     this.state.activeItem.owned=false;
-    this.economy.earn(amount,'sell_item');
+    // Sale fees are paid at the point of sale, so the wallet receives the net amount.
+    this.economy.earn(amount-saleCost,'sell_item');
     this.state.player.xp+=25;
     const previousPlayerLevel=this.state.player.level;
     this.state.player.level=Math.max(1,1+Math.floor(this.state.player.xp/50));
