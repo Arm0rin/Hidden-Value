@@ -28,7 +28,7 @@ export class Game {
   get phase(){return this.flow.getPhase();}
   get activeDefinition():ItemDefinition|null{return this.state.activeItemId?itemDefinitions[this.state.activeItemId]??null:null;}
 
-  private nextDefinition(){return itemSequence.find(def=>!this.state.progression.completedItemIds.includes(def.id)&&!this.rejectedItemIds.has(def.id));}
+  private nextDefinition(){return itemSequence.find(def=>!this.state.progression.completedItemIds.includes(def.id)&&!this.state.progression.rejectedItemIds.includes(def.id)&&!this.rejectedItemIds.has(def.id));}
 
   private createItem(definition:ItemDefinition){
     this.state.activeItemId=definition.id;
@@ -128,10 +128,12 @@ export class Game {
   async refuse(){
     if(this.phase!=='DECISION'||!this.state.activeItemId)return false;
     this.rejectedItemIds.add(this.state.activeItemId);
+    if(!this.state.progression.rejectedItemIds.includes(this.state.activeItemId))this.state.progression.rejectedItemIds.push(this.state.activeItemId);
     this.state.activeItem=null;
     this.state.activeItemId=null;
     if(!this.nextDefinition()){
       this.rejectedItemIds.clear();
+      this.state.progression.rejectedItemIds=[];
       await this.go('WORKSHOP');
       return true;
     }
