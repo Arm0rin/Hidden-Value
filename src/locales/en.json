@@ -13,6 +13,7 @@
   "sellerPrice": "Seller price",
   "valuation": "Valuation",
   "inspect": "INSPECT",
+  "inspectionTimer": "Time left",
   "buy": "BUY",
   "negotiate": "OFFER 10% LESS",
   "refuse": "REFUSE",

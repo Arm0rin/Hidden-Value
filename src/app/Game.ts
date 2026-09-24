@@ -89,12 +89,13 @@ export class Game {
     return true;
   }
 
-  async inspect(){if(this.phase==='CLIENT')await this.go('INSPECT');}
+  async inspect(){if(this.phase!=='CLIENT'||!this.state.activeItem)return;this.state.activeItem.inspectionStartedAt=Date.now();await this.go('INSPECT');}
 
   async decideBack(){if(this.phase==='INSPECT')await this.go('DECISION');}
 
   async revealClue(){
     if(this.phase!=='INSPECT'||!this.state.activeItem)return false;
+    if(Date.now()-(this.state.activeItem.inspectionStartedAt??Date.now())>35000)return false;
     const definition=this.activeDefinition;
     const clue=definition?.clues.find(candidate=>!this.state.activeItem!.discoveredClueIds.includes(candidate.id));
     if(!clue)return false;
