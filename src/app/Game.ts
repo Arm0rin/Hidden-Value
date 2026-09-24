@@ -107,11 +107,13 @@ export class Game {
     return true;
   }
 
-  async buy(){
+  async buy(discount=0){
     const definition=this.activeDefinition;
     if(this.phase!=='DECISION'||!this.state.activeItem||!definition||this.state.activeItem.bought)return false;
-    if(!this.economy.spend(definition.purchasePrice,'purchase_item'))return false;
+    const paidPrice=Math.max(1,Math.round(definition.purchasePrice*(1-Math.min(.2,Math.max(0,discount)))));
+    if(!this.economy.spend(paidPrice,'purchase_item'))return false;
     this.state.activeItem.bought=true;
+    this.state.activeItem.purchaseValue=paidPrice;
     this.state.activeItem.owned=true;
     this.state.stats.itemsBought+=1;
     this.analytics.track('item_bought',{itemId:definition.id,cash:this.state.player.cash});
@@ -213,7 +215,7 @@ export class Game {
     this.state.player.level=Math.max(1,1+Math.floor(this.state.player.xp/50));
     if(this.state.player.level>previousPlayerLevel)this.analytics.track('player_level_up',{level:this.state.player.level});
     this.state.stats.itemsSold+=1;
-    this.state.stats.totalProfit+=amount-definition.purchasePrice-repairCost-saleCost;
+    this.state.stats.totalProfit+=amount-(this.state.activeItem.purchaseValue??definition.purchasePrice)-repairCost-saleCost;
     if(saleMode?.id==='auction'){
       this.state.stats.auctionAttempts+=1;
       if(auctionSuccess)this.state.stats.auctionWins+=1;
@@ -227,7 +229,7 @@ export class Game {
     if(!this.state.progression.completedItemIds.includes(definition.id))this.state.progression.completedItemIds.push(definition.id);
     this.state.tutorial.completed=true;
     this.analytics.track('item_sold',{itemId:definition.id,cash:this.state.player.cash,saleMode:saleMode?.id,saleValue:amount});
-    this.analytics.track('item_completed',{itemId:definition.id,profit:amount-definition.purchasePrice-repairCost-saleCost});
+    this.analytics.track('item_completed',{itemId:definition.id,profit:amount-(this.state.activeItem.purchaseValue??definition.purchasePrice)-repairCost-saleCost});
     this.audio.tone('transaction');
     await this.saveService.save(this.state);
     await this.go('RESULT');
