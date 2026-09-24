@@ -130,6 +130,11 @@ export class Game {
     this.rejectedItemIds.add(this.state.activeItemId);
     this.state.activeItem=null;
     this.state.activeItemId=null;
+    if(!this.nextDefinition()){
+      this.rejectedItemIds.clear();
+      await this.go('WORKSHOP');
+      return true;
+    }
     await this.go('CLIENT');
     return true;
   }
